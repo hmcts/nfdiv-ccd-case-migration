@@ -165,7 +165,7 @@ repositories {
 ext {
   log4JVersion = "2.24.1"
   restAssuredVersion = '4.3.0!!'
-  lombokVersion = "1.18.34"
+  lombokVersion = "1.18.36"
   junit_version = "4.12"
   junitJupiterVersion = '5.9.3'
   junitVintageVersion = '5.10.3'
