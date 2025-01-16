@@ -20,7 +20,7 @@ import java.util.Map;
 @Slf4j
 @Component
 public class CaseMigrationProcessor {
-    private static final String EVENT_ID = "system-set-time-to-live";
+    private static final String EVENT_ID = "system-set-ttl";
     private static final String EVENT_SUMMARY = "Data Migration - Set retain and dispose time to live";
     private static final String EVENT_DESCRIPTION = "Data Migration - Set retain and dispose time to live";
     public static final String LOG_STRING = "-----------------------------------------";

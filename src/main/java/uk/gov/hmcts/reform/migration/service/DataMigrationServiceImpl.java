@@ -22,7 +22,7 @@ public class DataMigrationServiceImpl implements DataMigrationService<Map<String
             return null;
         }
 
-        Map<String, String> ttlMap = new HashMap<>();
+        Map<String, Object> ttlMap = new HashMap<>();
         LocalDate deleteDate = details.getLastModified().plusMonths(6).toLocalDate();
         ttlMap.put("Suspended", "No");
         ttlMap.put("OverrideTTL", null);
