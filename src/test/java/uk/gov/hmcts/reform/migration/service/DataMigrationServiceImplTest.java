@@ -1,18 +1,13 @@
 package uk.gov.hmcts.reform.migration.service;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.ccd.sdk.type.Organisation;
-import uk.gov.hmcts.ccd.sdk.type.OrganisationPolicy;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.domain.model.UserRole;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,11 +60,11 @@ public class DataMigrationServiceImplTest {
 
     @Test
     public void shouldPopulateTimeToLiveForOldDraftCases() {
-        Map<String, Object> expectedResult = new HashMap<>();
         Map<String, String> ttlMap = new HashMap<>();
         ttlMap.put("Suspended", "No");
         ttlMap.put("OverrideTTL", null);
         ttlMap.put("SystemTTL", "2023-07-03");
+        Map<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("TTL", ttlMap);
 
         CaseDetails inputCaseDetails = CaseDetails.builder()
@@ -85,11 +80,11 @@ public class DataMigrationServiceImplTest {
 
     @Test
     public void shouldPopulateTimeToLiveForNewDraftCases() {
-        Map<String, Object> expectedResult = new HashMap<>();
         Map<String, String> ttlMap = new HashMap<>();
         ttlMap.put("Suspended", "No");
         ttlMap.put("OverrideTTL", null);
         ttlMap.put("SystemTTL", "2025-08-04");
+        Map<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("TTL", ttlMap);
 
         CaseDetails inputCaseDetails = CaseDetails.builder()
