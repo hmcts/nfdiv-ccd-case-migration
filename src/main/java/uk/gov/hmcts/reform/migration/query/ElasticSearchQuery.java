@@ -9,71 +9,22 @@ public class ElasticSearchQuery {
         {
           "query": {
             "bool": {
-              "must_not": [
+              "must": [
                 {
                   "terms": {
-                    "state.keyword": [
-                      "Draft",
-                      "AwaitingApplicant1Response",
-                      "AwaitingApplicant2Response",
-                      "Applicant2Approved",
-                      "AwaitingPayment",
-                      "AwaitingHWFDecision",
-                      "Withdrawn",
-                      "Archived",
-                      "Rejected",
-                      "NewPaperCase",
-                      "FinalOrderComplete"
-                    ]
+                    "state.keyword": ["Draft"]
                   }
                 }
               ],
-              "should": [
-                {
-                  "bool": {
-                    "must_not":
-                      { "exists": {
-                        "field": "data_classification.applicant1SolicitorOrganisationPolicy.value.Organisation"
-                      }
-                    }
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not":
-                      { "exists": {
-                        "field": "data_classification.applicant2SolicitorOrganisationPolicy.value.Organisation"
-                      }
-                    }
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not": [
-                      { "match": {
-                        "data.applicant1SolicitorOrganisationPolicy.OrgPolicyCaseAssignedRole": "[APPONESOLICITOR]"
-                      } }
-                    ]
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not": [
-                      { "match": {
-                        "data.applicant2SolicitorOrganisationPolicy.OrgPolicyCaseAssignedRole": "[APPTWOSOLICITOR]"
-                      } }
-                    ]
-                  }
-                }
-              ],
-              "minimum_should_match": 1
+              "must_not": [
+                  { "exists": { "field": "data.TTL" } }
+              ]
             }
           },
           "_source": [
             "reference",
             "state",
-            "data.applicant1SolicitorOrganisationPolicy",
-            "data.applicant2SolicitorOrganisationPolicy"
+            "data.TTL"
           ],
           "size": %s,
           "sort": [

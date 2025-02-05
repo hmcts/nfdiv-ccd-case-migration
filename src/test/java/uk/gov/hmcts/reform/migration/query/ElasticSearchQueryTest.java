@@ -20,82 +20,33 @@ public class ElasticSearchQueryTest {
             .build();
         String query = elasticSearchQuery.getQuery();
         assertEquals("""
-        {
-          "query": {
-            "bool": {
-              "must_not": [
-                {
-                  "terms": {
-                    "state.keyword": [
-                      "Draft",
-                      "AwaitingApplicant1Response",
-                      "AwaitingApplicant2Response",
-                      "Applicant2Approved",
-                      "AwaitingPayment",
-                      "AwaitingHWFDecision",
-                      "Withdrawn",
-                      "Archived",
-                      "Rejected",
-                      "NewPaperCase",
-                      "FinalOrderComplete"
-                    ]
-                  }
-                }
-              ],
-              "should": [
-                {
-                  "bool": {
-                    "must_not":
-                      { "exists": {
-                        "field": "data_classification.applicant1SolicitorOrganisationPolicy.value.Organisation"
-                      }
-                    }
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not":
-                      { "exists": {
-                        "field": "data_classification.applicant2SolicitorOrganisationPolicy.value.Organisation"
-                      }
-                    }
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not": [
-                      { "match": {
-                        "data.applicant1SolicitorOrganisationPolicy.OrgPolicyCaseAssignedRole": "[APPONESOLICITOR]"
-                      } }
-                    ]
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not": [
-                      { "match": {
-                        "data.applicant2SolicitorOrganisationPolicy.OrgPolicyCaseAssignedRole": "[APPTWOSOLICITOR]"
-                      } }
-                    ]
-                  }
-                }
-              ],
-              "minimum_should_match": 1
-            }
-          },
-          "_source": [
-            "reference",
-            "state",
-            "data.applicant1SolicitorOrganisationPolicy",
-            "data.applicant2SolicitorOrganisationPolicy"
-          ],
-          "size": 100,
-          "sort": [
-            {
-              "reference.keyword": "asc"
-            }
-          ]
-        }   """, query);
+         {
+           "query": {
+             "bool": {
+               "must": [
+                 {
+                   "terms": {
+                     "state.keyword": ["Draft"]
+                   }
+                 }
+               ],
+               "must_not": [
+                   { "exists": { "field": "data.TTL" } }
+               ]
+             }
+           },
+           "_source": [
+             "reference",
+             "state",
+             "data.TTL"
+           ],
+           "size": 100,
+           "sort": [
+             {
+               "reference.keyword": "asc"
+             }
+           ]
+         }    """, query);
     }
 
     @Test
@@ -110,71 +61,22 @@ public class ElasticSearchQueryTest {
         {
           "query": {
             "bool": {
-              "must_not": [
+              "must": [
                 {
                   "terms": {
-                    "state.keyword": [
-                      "Draft",
-                      "AwaitingApplicant1Response",
-                      "AwaitingApplicant2Response",
-                      "Applicant2Approved",
-                      "AwaitingPayment",
-                      "AwaitingHWFDecision",
-                      "Withdrawn",
-                      "Archived",
-                      "Rejected",
-                      "NewPaperCase",
-                      "FinalOrderComplete"
-                    ]
+                    "state.keyword": ["Draft"]
                   }
                 }
               ],
-              "should": [
-                {
-                  "bool": {
-                    "must_not":
-                      { "exists": {
-                        "field": "data_classification.applicant1SolicitorOrganisationPolicy.value.Organisation"
-                      }
-                    }
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not":
-                      { "exists": {
-                        "field": "data_classification.applicant2SolicitorOrganisationPolicy.value.Organisation"
-                      }
-                    }
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not": [
-                      { "match": {
-                        "data.applicant1SolicitorOrganisationPolicy.OrgPolicyCaseAssignedRole": "[APPONESOLICITOR]"
-                      } }
-                    ]
-                  }
-                },
-                {
-                  "bool": {
-                    "must_not": [
-                      { "match": {
-                        "data.applicant2SolicitorOrganisationPolicy.OrgPolicyCaseAssignedRole": "[APPTWOSOLICITOR]"
-                      } }
-                    ]
-                  }
-                }
-              ],
-              "minimum_should_match": 1
+              "must_not": [
+                  { "exists": { "field": "data.TTL" } }
+              ]
             }
           },
           "_source": [
             "reference",
             "state",
-            "data.applicant1SolicitorOrganisationPolicy",
-            "data.applicant2SolicitorOrganisationPolicy"
+            "data.TTL"
           ],
           "size": 100,
           "sort": [
@@ -182,6 +84,6 @@ public class ElasticSearchQueryTest {
               "reference.keyword": "asc"
             }
           ],"search_after": [1677777777]
-        }   """, query);
+        }    """, query);
     }
 }
