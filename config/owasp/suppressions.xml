@@ -7,11 +7,15 @@
         CVE-2023-35116 refer [Ticket]
         CVE-2023-6481 refer [Ticket]
         CVE-2023-34042 refer [Ticket]
+        CVE-2023-52428 refer [https://tools.hmcts.net/jira/browse/CCD-6285]
+        CVE-2024-38820 refer [https://tools.hmcts.net/jira/browse/CCD-6278]
     </notes>
     <cve>CVE-2020-8022</cve>
     <cve>CVE-2023-34055</cve>
     <cve>CVE-2023-6378</cve>
     <cve>CVE-2023-35116</cve>
     <cve>CVE-2023-6481</cve>
+    <cve>CVE-2023-52428</cve>
+    <cve>CVE-2024-38820</cve>
   </suppress>
 </suppressions>
