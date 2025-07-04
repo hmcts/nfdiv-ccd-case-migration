@@ -121,8 +121,8 @@ jacocoTestReport {
   executionData(test, integration)
   reports {
     xml.required = true
+    html.required = true
     csv.required = false
-    xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
   }
 }
 
@@ -134,7 +134,7 @@ sonarqube {
     property "sonar.projectName", "nfdiv-ccd-case-migration"
     property "sonar.projectKey", "nfdiv-ccd-case-migration"
     property "sonar.exclusions", "**/model/*.java,**/exception/*.java,**/domain/*.java,**/common/*.java,**/migration/auth/AuthTokenGeneratorConfiguration.java,**/migration/CaseMigrationRunner.java,**/ccd/HttpMessageConverterConfiguration.java, **/deserializer/*.java"
-    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+    property "sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml").get()}"
   }
 }
 
@@ -275,8 +275,7 @@ test {
 
   testLogging {
     events "failed"
-    exceptionFormat "full"
-    showStandardStreams = true
+    exceptionFormat "shot"
 
     debug {
       events "passed", "started", "skipped", "failed"
