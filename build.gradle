@@ -275,7 +275,7 @@ test {
 
   testLogging {
     events "failed"
-    exceptionFormat "shot"
+    exceptionFormat "short"
 
     debug {
       events "passed", "started", "skipped", "failed"
