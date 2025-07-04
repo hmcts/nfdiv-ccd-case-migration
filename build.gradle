@@ -75,6 +75,9 @@ tasks.withType(Test).configureEach {
   useJUnitPlatform()
 
   testLogging {
+    events "passed", "skipped", "failed"
+    exceptionFormat "full"
+    showStandardStreams = true
     exceptionFormat = 'full'
   }
 }
