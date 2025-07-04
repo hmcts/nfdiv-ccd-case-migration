@@ -5,7 +5,7 @@ plugins {
   id 'java'
   id "io.freefair.lombok" version "8.13.1"
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '2.7.18'
+  id 'org.springframework.boot' version '3.5.3'
   id 'com.github.kt3k.coveralls' version '2.12.2'
   id 'hmcts.ccd.sdk' version '5.5.21'
   id 'com.github.ben-manes.versions' version '0.51.0'
@@ -18,7 +18,7 @@ version = '0.0.1'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
@@ -71,10 +71,13 @@ tasks.withType(JavaExec).configureEach {
   javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
   useJUnitPlatform()
 
   testLogging {
+    events "passed", "skipped", "failed"
+    exceptionFormat "full"
+    showStandardStreams = true
     exceptionFormat = 'full'
   }
 }
@@ -83,14 +86,14 @@ test {
   failFast = true
 }
 
-task functional(type: Test) {
+tasks.register('functional', Test) {
   description = "Runs functional tests"
   group = "Verification"
   testClassesDirs = sourceSets.functionalTest.output.classesDirs
   classpath = sourceSets.functionalTest.runtimeClasspath
 }
 
-task integration(type: Test) {
+tasks.register('integration', Test) {
   description = "Runs integration tests"
   group = "Verification"
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
@@ -98,14 +101,14 @@ task integration(type: Test) {
   failFast = true
 }
 
-task fortifyScan(type: JavaExec)  {
+tasks.register('fortifyScan', JavaExec) {
   main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
   ignoreExitValue = true
 }
 
-task smoke(type: Test) {
+tasks.register('smoke', Test) {
   description = "Runs Smoke Tests"
   testClassesDirs = sourceSets.smokeTest.output.classesDirs
   classpath = sourceSets.smokeTest.runtimeClasspath
@@ -121,8 +124,8 @@ jacocoTestReport {
   executionData(test, integration)
   reports {
     xml.required = true
+    html.required = true
     csv.required = false
-    xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
   }
 }
 
@@ -134,7 +137,7 @@ sonarqube {
     property "sonar.projectName", "nfdiv-ccd-case-migration"
     property "sonar.projectKey", "nfdiv-ccd-case-migration"
     property "sonar.exclusions", "**/model/*.java,**/exception/*.java,**/domain/*.java,**/common/*.java,**/migration/auth/AuthTokenGeneratorConfiguration.java,**/migration/CaseMigrationRunner.java,**/ccd/HttpMessageConverterConfiguration.java, **/deserializer/*.java"
-    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+    property "sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml").get()}"
   }
 }
 
@@ -172,15 +175,21 @@ ext {
   junitJupiterVersion = '5.9.3'
   junitVintageVersion = '5.11.3'
   powermockVersion = '2.0.9'
-  springSecurity   =  '6.5.1'
-  springCloudVersion = '2021.0.9'
+  springSecurity   =  '6.4.2'
+  springCloudVersion = '2024.0.0'
 }
 
 ext['jackson.version'] = '2.15.3'
 ext['snakeyaml.version'] = '2.0'
-ext['spring-security.version'] = '5.8.10'
+ext['spring-security.version'] = '6.4.2'
 
 dependencies {
+  implementation group: 'org.springframework.security', name: 'spring-security-web', version: springSecurity
+  implementation group: 'org.springframework.security', name: 'spring-security-core', version: springSecurity
+  implementation group: 'org.springframework.security', name: 'spring-security-config', version: springSecurity
+  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: springSecurity
+  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: springSecurity
+  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: springSecurity
   implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
@@ -189,10 +198,8 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.4'
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.3.2'
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '5.1.0'
-  implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:11.0.7'
-  implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.7'
-
-  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:11.0.8'
+  implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.8'
 
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
 
@@ -202,23 +209,16 @@ dependencies {
   implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4JVersion
   testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.5'
 
-  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-
-  testImplementation('org.junit.jupiter:junit-jupiter:5.11.3')
-  testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
-  testRuntimeOnly "org.junit.vintage:junit-vintage-engine:${junitVintageVersion}"
-  testImplementation group:'org.mockito', name: 'mockito-junit-jupiter', version:'5.18.0'
-  testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: powermockVersion
-  testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: powermockVersion
-  testRuntimeOnly "org.junit.platform:junit-platform-commons:1.9.3"
+  testImplementation (group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+  }
   implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
   testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
 
   testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.9', classifier: 'all'
 
-  implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
+  implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
   implementation group: 'commons-io', name: 'commons-io', version: '2.19.0'
   implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: springSecurity
   implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: springSecurity
@@ -263,7 +263,7 @@ wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }
 
-configurations.all {
+configurations.configureEach {
   exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
   exclude group: 'org.springframework.boot', module: 'spring-boot-starter-security'
   exclude group: 'org.springframework.security', module: 'spring-security-rsa'
@@ -289,7 +289,7 @@ test {
   }
 
   reports {
-    html.enabled = true
+    html.required = true
   }
 
   jvmArgs = [
