@@ -175,7 +175,7 @@ ext {
   junitJupiterVersion = '5.9.3'
   junitVintageVersion = '5.11.3'
   powermockVersion = '2.0.9'
-  springSecurity   =  '6.4.2'
+  springSecurity   =  '6.5.7'
   springCloudVersion = '2025.1.0'
 }
 
