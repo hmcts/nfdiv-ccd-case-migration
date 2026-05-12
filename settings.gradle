@@ -1,2 +1,10 @@
-rootProject.name = 'nfdiv-ccd-case-migration'
+pluginManagement {
+    repositories {
+        maven {
+            url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+        }
+      gradlePluginPortal()
+    }
+}
 
+rootProject.name = 'nfdiv-ccd-case-migration'
