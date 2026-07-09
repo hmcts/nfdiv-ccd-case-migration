@@ -199,7 +199,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '6.0.0'
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '6.0.0'
   implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:11.0.24'
-  implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.23'
+  implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.24'
 
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
 
