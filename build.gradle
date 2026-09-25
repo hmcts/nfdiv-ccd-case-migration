@@ -196,7 +196,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
   implementation group: 'org.springframework', name: 'spring-context-support'
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '4.1.0-CCD-8220'
-  implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '6.0.1'
+  implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '6.1.2'
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '6.0.0'
   implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:11.0.26'
   implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.26'
