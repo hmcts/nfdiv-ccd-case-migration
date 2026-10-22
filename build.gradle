@@ -18,7 +18,7 @@ version = '0.0.1'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
+    languageVersion = JavaLanguageVersion.of(25)
   }
 }
 
@@ -252,7 +252,9 @@ dependencyManagement {
   }
 }
 
-mainClassName = 'uk.gov.hmcts.reform.migration.CaseMigrationRunner'
+application {
+  mainClass = 'uk.gov.hmcts.reform.migration.CaseMigrationRunner'
+}
 
 bootJar {
   archiveFileName = 'ccd-case-migration.jar'
