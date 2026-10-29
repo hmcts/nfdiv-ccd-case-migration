@@ -8,8 +8,8 @@ plugins {
   id 'org.springframework.boot' version '3.5.16'
   id 'com.github.kt3k.coveralls' version '2.12.2'
   id 'hmcts.ccd.sdk' version '6.38.3'
-  id 'com.github.ben-manes.versions' version '0.66.0'
-  id 'org.sonarqube' version '6.0.1.5171'
+  id 'io.github.ben-manes.versions' version '0.66.0'
+  id 'org.sonarqube' version '7.5.0.8588'
   id 'uk.gov.hmcts.java' version '0.12.68'
 }
 
@@ -18,7 +18,7 @@ version = '0.0.1'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
+    languageVersion = JavaLanguageVersion.of(25)
   }
 }
 
@@ -102,7 +102,7 @@ tasks.register('integration', Test) {
 }
 
 tasks.register('fortifyScan', JavaExec) {
-  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  mainClass = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
   ignoreExitValue = true
@@ -252,7 +252,9 @@ dependencyManagement {
   }
 }
 
-mainClassName = 'uk.gov.hmcts.reform.migration.CaseMigrationRunner'
+application {
+  mainClass = 'uk.gov.hmcts.reform.migration.CaseMigrationRunner'
+}
 
 bootJar {
   archiveFileName = 'ccd-case-migration.jar'
