@@ -5,9 +5,9 @@ plugins {
   id 'java'
   id "io.freefair.lombok" version "9.8.3"
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '3.5.16'
+  id 'org.springframework.boot' version '4.1.1'
   id 'com.github.kt3k.coveralls' version '2.12.2'
-  id 'hmcts.ccd.sdk' version '6.38.3'
+  id 'hmcts.ccd.sdk' version '8.11.0'
   id 'io.github.ben-manes.versions' version '0.67.0'
   id 'org.sonarqube' version '7.5.0.8588'
   id 'uk.gov.hmcts.java' version '0.12.68'
@@ -175,56 +175,53 @@ ext {
   junitJupiterVersion = '5.9.3'
   junitVintageVersion = '5.11.3'
   powermockVersion = '2.0.9'
-  springSecurity   =  '7.1.2'
   springCloudVersion = '2025.1.4'
 }
 
-ext['jackson.version'] = '2.15.3'
 ext['snakeyaml.version'] = '2.0'
-ext['spring-security.version'] = '6.4.2'
 
 dependencies {
-  implementation group: 'org.springframework.security', name: 'spring-security-web', version: springSecurity
-  implementation group: 'org.springframework.security', name: 'spring-security-core', version: springSecurity
-  implementation group: 'org.springframework.security', name: 'spring-security-config', version: springSecurity
-  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: springSecurity
-  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: springSecurity
-  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: springSecurity
-  implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
-  implementation group: 'org.springframework', name: 'spring-context-support'
-  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '4.1.0-CCD-8220'
-  implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '6.0.1'
-  implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '6.0.0'
+  implementation 'org.springframework.security:spring-security-web'
+  implementation 'org.springframework.security:spring-security-core'
+  implementation 'org.springframework.security:spring-security-config'
+  implementation 'org.springframework.security:spring-security-oauth2-resource-server'
+  implementation 'org.springframework.security:spring-security-oauth2-client'
+  implementation 'org.springframework.security:spring-security-oauth2-jose'
+
+  implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework:spring-context-support'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-jackson2'
+  implementation('net.logstash.logback:logstash-logback-encoder:9.0') {
+    exclude group: 'tools.jackson.core', module: 'jackson-core'
+    exclude group: 'tools.jackson.core', module: 'jackson-databind'
+  }
+
+  implementation 'com.github.hmcts:idam-java-client:4.0.0'
+  implementation 'com.github.hmcts:service-auth-provider-java-client:6.1.2'
+  implementation 'com.github.hmcts:core-case-data-store-client:5.4.0'
+
   implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:11.0.27'
   implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.27'
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1'
+  implementation 'com.github.hmcts.java-logging:logging:8.0.0'
 
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '8.0.0'
+  implementation "org.apache.logging.log4j:log4j-api:${log4JVersion}"
+  implementation "org.apache.logging.log4j:log4j-to-slf4j:${log4JVersion}"
 
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4JVersion
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4JVersion
-  testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '6.3.0'
-
-  testImplementation (group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+  testImplementation 'io.rest-assured:rest-assured:6.3.0'
+  testImplementation('org.springframework.boot:spring-boot-starter-test') {
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
-  implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-  testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+  implementation "org.projectlombok:lombok:${lombokVersion}"
+  annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+  testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.10', classifier: 'all'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
 
-  implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
-  implementation group: 'commons-io', name: 'commons-io', version: '2.22.0'
-  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: springSecurity
-  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: springSecurity
-  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: springSecurity
-  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-core', version: springSecurity
-  implementation group: 'org.springframework.security', name: 'spring-security-config', version: springSecurity
+  implementation 'commons-fileupload:commons-fileupload:1.6.0'
+  implementation 'commons-io:commons-io:2.22.0'
 }
 
 dependencyManagement {
